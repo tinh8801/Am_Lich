@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//Chưa fix lỗi tính sai
 namespace AmLich
 {
     public static class LunarYearTools
