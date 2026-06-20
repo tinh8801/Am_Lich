@@ -1,0 +1,10 @@
+01_strip_trailing_whitespace.diff
+02_fix_compiler_warnings.diff
+03_add_full_path_to_lunar_bitmap.diff
+04_add_big5_and_utf8_output.diff
+05_fix_output_on_year_2033.diff
+06_use_locale_and_current_date.diff
+07_fix_segfault_aggressive-loop-optimizations.diff
+10_complete_the_makefile.diff
+20_update_man_page.diff
+22_datetime-go-back_Zhi.hour_jiealert.patch
