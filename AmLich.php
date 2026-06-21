@@ -1,5 +1,8 @@
+<!DOCTYPE html>
 <html>
+<head>
 <title>Am Lich (PHP)</title>
+</head>
 <body>
 
 <?php
@@ -75,8 +78,8 @@ function getSunLongitude($jdn, $timeZone) {
 	$L = $L0 + $DL; // true longitude, degree
 	//echo "\ndr = $dr, M = $M, T = $T, DL = $DL, L = $L, L0 = $L0\n";
     // obtain apparent longitude by correcting for nutation and aberration
-    $omega = 125.04 - 1934.136 * T;
-    $L = $L - 0.00569 - 0.00478 * Math.sin($omega * $dr);
+    $omega = 125.04 - 1934.136 * $T;
+    $L = $L - 0.00569 - 0.00478 * sin($omega * $dr);
 	$L = $L*$dr;
 	$L = $L - M_PI*2*(INT($L/(M_PI*2))); // Normalize to (0, 2*PI)
 	return INT($L/M_PI*6);
@@ -176,29 +179,44 @@ function convertLunar2Solar($lunarDay, $lunarMonth, $lunarYear, $lunarLeap, $tim
 }
 ?>
 
-<font size="6" color="green"><h3>&#272;&#7893;i ng&#224;y d&#432;&#417;ng ra ng&#224;y &#226;m</h3></font>
+<font size="8" color="green"><h3>&#272;&#7893;i ng&#224;y d&#432;&#417;ng ra ng&#224;y &#226;m</h3></font>
 
 <?php
+
 $date_array = getdate();
-$dd = $_REQUEST['dd'];
-$mm = $_REQUEST['mm'];
-$yy = $_REQUEST['yy'];
-if ($dd == 0) $dd = $date_array['mday'];
-if ($mm == 0) $mm = $date_array['mon'];
-if ($yy == 0) $yy = $date_array['year'];
+$dd = null;
+$mm = null;
+$yy = null;
+
+
+if (($dd == null) || ($mm == null) || ($yy == null)) {
+	$dd = $date_array['mday'];
+    $mm = $date_array['mon'];
+    $yy = $date_array['year'];
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$dd = $_POST['dd'];
+    $mm = $_POST['mm'];
+    $yy = $_POST['yy'];
+	//echo "$dd - $mm - $yy\n";
+}
+	
 $al = convertSolar2Lunar($dd, $mm, $yy, 7.0);
 
-echo "<p><form action=\"\" method=\"POST\">\n";
-echo "Ng&#224;y: <input name=\"dd\" size=2 value=\"$dd\">\n";
-echo "Th&#225;ng: <input name=\"mm\" size=2 value=\"$mm\">\n";
-echo "N&#259;m: <input name=\"yy\" size=4 value=\"$yy\">\n";
+echo "<p><form id=\"ngaythang\" action=\"\" method=\"POST\">\n";
+echo "<font size=\"4\" color=\"magenta\">Ng&#224;y: </font><input name=\"dd\" size=4 value=\"$dd\">\n";
+echo "<font size=\"4\" color=\"magenta\">Th&#225;ng: </font><input name=\"mm\" size=4 value=\"$mm\">\n";
+echo "<font size=\"4\" color=\"magenta\">N&#259;m: </font><input name=\"yy\" size=4 value=\"$yy\">\n";
 echo "<input type=\"submit\">\n";
 echo "</form>\n";
 echo "<br><br>";
-echo "<font size=\"6\" color=\"blue\">D&#432;&#417;ng l&#7883;ch: $dd/$mm/$yy => </font>";
+echo "<font size=\"6\" color=\"blue\">D&#432;&#417;ng l&#7883;ch: $dd/$mm/$yy</font>";
+echo "<font size=\"8\" color=\"yellow\"> ==> </font>";
 $s = "&#194;m l&#7883;ch: $al[0]/$al[1]/$al[2]";
 if ($al[3] == 1) $s = $s . " nhu&#7853;n";
-echo "<font size=\"6\" color=\"red\">$s</font>";
+echo "<font size=\"8\" color=\"red\">$s</font>\n";
 ?>
+
 </body>
 </html>
